@@ -4,3 +4,4 @@ requests
 flask_login
 flask_sqlalchemy
 sqlalchemy
+psycopg2
