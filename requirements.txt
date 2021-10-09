@@ -1,3 +1,6 @@
 flask
 python-dotenv
 requests
+flask_login
+flask_sqlalchemy
+sqlalchemy
