@@ -3,8 +3,10 @@ from flask.json import jsonify
 import flask_login
 import dotenv
 import os
-from flask_login.utils import logout_user
 from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
+from sqlalchemy.orm.scoping import scoped_session
+from sqlalchemy.orm.session import sessionmaker
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
@@ -16,15 +18,13 @@ login_manager.init_app(app)
 login_manager.login_view = "/login"
 
 # Point SQLAlchemy to your Heroku database
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://postgres:postgres@localhost/songoracle"  # os.getenv('DATABASE_URL')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 # Gets rid of a warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-users = {}
+Session = scoped_session(sessionmaker(bind=db.engine))
 
 
 class User(flask_login.UserMixin):
@@ -32,22 +32,18 @@ class User(flask_login.UserMixin):
         self.id = uid
 
     def get(uid):
-        # from models import DBUser
+        from models import DBUser
 
-        # user = DBUser.query().filter_by(username=uid).first()
-        # if user is None:
-        #    return user
-        # return User(user.username)
-        # return User(uid=uid)
-        if uid in users:
-            return users[uid]
-        return None
+        user = DBUser.query().filter_by(username=uid).first()
+        if user is None:
+            return user
+        return User(user.username)
 
     def create(uid):
-        if uid in users:
-            return None
+        session = Session()
         result = User(uid=uid)
-        users[uid] = result
+        session.add(result)
+        session.commit()
         return result
 
 
@@ -104,4 +100,9 @@ def validate_signup():
         return jsonify({"valid": False})
 
 
-app.run(debug=True)
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    Session.remove()
+
+
+# app.run(debug=True)
