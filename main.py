@@ -19,7 +19,9 @@ login_manager.init_app(app)
 login_manager.login_view = "/login"
 
 # Point SQLAlchemy to your Heroku database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    "postgresql" + os.getenv("DATABASE_URL")[8:]
+)  # replace the initial 'postgres' with 'postgresql' because heroku is stupid and doesn't let you modify the config var
 # Gets rid of a warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
