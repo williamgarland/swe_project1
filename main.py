@@ -37,7 +37,7 @@ class User(flask_login.UserMixin):
     def get(uid):
         from models import DBUser
 
-        user = DBUser.query().filter_by(username=uid).first()
+        user = DBUser.query.filter_by(username=uid).first()
         if user is None:
             return user
         return User(user.username)
