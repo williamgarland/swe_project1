@@ -5,8 +5,9 @@ import dotenv
 import os
 from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy
-from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy.orm.session import sessionmaker
+
+# from sqlalchemy.orm.scoping import scoped_session
+# from sqlalchemy.orm.session import sessionmaker
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
@@ -24,7 +25,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-Session = scoped_session(sessionmaker(bind=db.engine))
+# Session = scoped_session(sessionmaker(bind=db.engine))
 
 
 class User(flask_login.UserMixin):
@@ -40,10 +41,10 @@ class User(flask_login.UserMixin):
         return User(user.username)
 
     def create(uid):
-        session = Session()
+        # session = Session()
         result = User(uid=uid)
-        session.add(result)
-        session.commit()
+        db.session.add(result)
+        db.session.commit()
         return result
 
 
@@ -100,9 +101,11 @@ def validate_signup():
         return jsonify({"valid": False})
 
 
+"""
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     Session.remove()
+"""
 
 
-# app.run(debug=True)
+app.run(debug=True)
