@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Song Oracle - Dashboard</title>
+    <link href="/static/style_dashboard.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="toolbar_panel">
+        <!--
+            Top left: show song oracle icon/title which is a link to the dashboard 
+            Top center: Show the current page location. For the dashboard, this should be "Dashboard"
+            Top right: Show "<username>" button which when clicked opens a drop down menu with the following options:
+                Profile
+                Saved Artists
+                Saved Genres? (optional)
+                Log Out
+        -->
+        <button id="home_button" onclick="gotoDashboard()">
+            Song Oracle
+        </button>
+
+        <p id="page_title">
+            Dashboard
+        </p>
+
+        <div id="user_menu" class="dropdown">
+            <button class="dropbtn" onclick="toggleUserMenu()">
+                {{current_user.get_id()}}
+            </button>
+
+            <div id="menu_list" class="dropdown-content">
+                <a href="/profile">My Profile</a>
+                <a href="/my-artists">My Artists</a>
+                <a href="/logout">Log Out</a>
+            </div>
+        </div>
+    </div>
+    <div id="saved_artists_panel">
+
+    </div>
+    <div id="recommended_artists_panel">
+
+    </div>
+
+    <script src="/static/script_dashboard.js"></script>
+</body>
+
+</html>

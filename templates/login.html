@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Song Oracle - Log In</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+
+<body>
+    <h1>Please log in</h1>
+    <form id="login_form" action="/login" method="POST" role="form">
+        <input type="text" name="username" id="username" placeholder="Username" required autofocus />
+        <button id="log_in_button" type="button">Log In</button>
+    </form>
+    <div id="error_div"></div>
+    <a href="/signup">Sign Up</a>
+
+    <script src="/static/script_login.js"></script>
+</body>
+
+</html>
