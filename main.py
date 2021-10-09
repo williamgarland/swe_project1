@@ -43,9 +43,11 @@ class User(flask_login.UserMixin):
         return User(user.username)
 
     def create(uid):
+        from models import DBUser
+
         # session = Session()
         result = User(uid=uid)
-        db.session.add(result)
+        db.session.add(DBUser(username=uid))
         db.session.commit()
         return result
 
