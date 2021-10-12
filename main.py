@@ -1,22 +1,18 @@
 import flask
 from flask.json import jsonify
-import flask_login
 import dotenv
+import flask_login
 import os
 from flask_sqlalchemy import SQLAlchemy
-import sqlalchemy
+import userdata
+import spotify_calls
 
-# from sqlalchemy.orm.scoping import scoped_session
-# from sqlalchemy.orm.session import sessionmaker
+root_endpoint = "https://api.spotify.com/v1/"
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 app = flask.Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
-
-login_manager = flask_login.LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "/login"
 
 # Point SQLAlchemy to your Heroku database
 app.config["SQLALCHEMY_DATABASE_URI"] = (
@@ -27,34 +23,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-# Session = scoped_session(sessionmaker(bind=db.engine))
-
-
-class User(flask_login.UserMixin):
-    def __init__(self, uid):
-        self.id = uid
-
-    def get(uid):
-        from models import DBUser
-
-        user = DBUser.query.filter_by(username=uid).first()
-        if user is None:
-            return user
-        return User(user.username)
-
-    def create(uid):
-        from models import DBUser
-
-        # session = Session()
-        result = User(uid=uid)
-        db.session.add(DBUser(username=uid))
-        db.session.commit()
-        return result
-
-
-@login_manager.user_loader
-def load_user(uid):
-    return User.get(uid)
+userdata.init_login_manager(app, db)
 
 
 @app.route("/login")
@@ -65,22 +34,62 @@ def login():
 @app.route("/validate_login", methods=["POST"])
 def validate_login():
     username = flask.request.form["username"]
-    user = User.get(username)
-    if user:
-        flask_login.login_user(user, remember=True)
-    return jsonify({"valid": user != None})
+    try:
+        user = userdata.login(username)
+        return jsonify({"valid": user != None})
+    except:
+        return jsonify({"valid": False}), 500
+
+
+def create_artists_list(artists):
+    result = []
+    token = spotify_calls.get_spotify_token()
+    for artist in artists:
+        tracks = spotify_calls.get_random_artist_tracks(artist.artist_id, token)
+        artist_map = {
+            "name": spotify_calls.get_artist_info(artist.artist_id, token)["name"],
+            "tracks": tracks,
+        }
+        result.append(artist_map)
+    return result
+
+
+def create_recommended_artists_list(artists):
+    result = []
+    token = spotify_calls.get_spotify_token()
+    for artist in artists:
+        artist_info = spotify_calls.get_artist_info(artist.artist_id, token)
+        recommended_artists = spotify_calls.get_related_artists(artist.artist_id, token)
+        result.append(
+            {"artist_name": artist_info["name"], "artists": recommended_artists}
+        )
+    return result
 
 
 @app.route("/")
 @flask_login.login_required
 def index():
-    return flask.render_template("/dashboard.html")
+    artists = None
+    saved_artists = None
+    recommended_artists = None
+    try:
+        artists = userdata.get_saved_artists()
+        saved_artists = create_artists_list(artists)
+        recommended_artists = create_recommended_artists_list(artists)
+    except Exception:
+        pass
+
+    return flask.render_template(
+        "/dashboard.html",
+        saved_artists=saved_artists,
+        recommended_artists=recommended_artists,
+    )
 
 
 @app.route("/logout")
 @flask_login.login_required
 def logout():
-    flask_login.logout_user()
+    userdata.logout()
     return flask.redirect("/login")
 
 
@@ -92,17 +101,16 @@ def signup():
 @app.route("/validate_signup", methods=["POST"])
 def validate_signup():
     username = flask.request.form["username"]
-    user = User.get(username)
-    print("user: " + str(user))
-    if user == None:
-        # Add the user to the database and log in
-        # TODO: Add the user to the database
-        user = User.create(username)
-        flask_login.login_user(user, remember=True)
+    try:
+        if not userdata.user_exists(username):
+            userdata.User.create(username)
+            userdata.login(username)
 
-        return jsonify({"valid": True})
-    else:
-        return jsonify({"valid": False})
+            return jsonify({"valid": True})
+        else:
+            return jsonify({"valid": False})
+    except:
+        return jsonify({}), 500
 
 
 """
@@ -112,5 +120,5 @@ def shutdown_session(exception=None):
 """
 
 if __name__ == "__main__":
-    # app.run(debug=True)
-    app.run(host=os.getenv("IP", "0.0.0.0"), port=os.getenv("PORT", 8080))
+    app.run(debug=True)
+    # app.run(host=os.getenv("IP", "0.0.0.0"), port=os.getenv("PORT", 8080))

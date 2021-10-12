@@ -1,18 +1,66 @@
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    flex: 1 1 auto;
+}
+
+.toolbar_element {
+    display: inline-block;
+}
+
+#toolbar_panel {
+    flex: 0 1 auto;
+    width: 100%;
+    border-bottom: #555555 solid;
+    display: flex;
+    flex-flow: row;
+}
+
+#page_title {
+    flex: 1 1 0%;
+    text-align: center;
+    font-size: larger;
+    transform: translateY(25%);
+}
+
+#home_button_div {
+    flex: 0 1 0%;
+}
+
+#home_button {
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+#home_button:hover {
+    background-color: #DDDDDD;
+}
+
+#user_menu {
+    flex: 0 1 0%;
+}
+
 /* Dropdown Button */
 
 .dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 16px;
+    background-color: #f1f1f1;
+    color: black;
     font-size: 16px;
+    padding: 10px;
     border: none;
     cursor: pointer;
+    height: 100%;
 }
 
 /* Dropdown button on hover & focus */
 
 .dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
+    background-color: #DDDDDD;
 }
 
 /* The container <div> - needed to position the dropdown content */
@@ -31,6 +79,7 @@
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    right: 10%;
 }
 
 /* Links inside the dropdown */
@@ -52,4 +101,35 @@
 
 .show {
     display: block;
+}
+
+#content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: row;
+}
+
+.content_element {
+    flex: 1 1 auto;
+    /*width: 100%;
+    height: 100%;*/
+    width: 100%;
+}
+
+#saved_artists_panel {
+    border-right: solid gray;
+}
+
+#saved_artists_title {
+    font-size: 24px;
+    text-align: center;
+}
+
+#recommended_artists_panel {
+    border-left: solid gray;
+}
+
+#recommended_artists_title {
+    font-size: 24px;
+    text-align: center;
 }

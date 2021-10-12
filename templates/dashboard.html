@@ -17,15 +17,17 @@
                 Saved Genres? (optional)
                 Log Out
         -->
-        <button id="home_button" onclick="gotoDashboard()">
-            Song Oracle
-        </button>
+        <div id="home_button_div" class="toolbar_element">
+            <button id="home_button" onclick="gotoDashboard()">
+                Song Oracle
+            </button>
+        </div>
 
-        <p id="page_title">
+        <div id="page_title" class="toolbar_element">
             Dashboard
-        </p>
+        </div>
 
-        <div id="user_menu" class="dropdown">
+        <div id="user_menu" class="dropdown toolbar_element">
             <button class="dropbtn" onclick="toggleUserMenu()">
                 {{current_user.get_id()}}
             </button>
@@ -37,11 +39,63 @@
             </div>
         </div>
     </div>
-    <div id="saved_artists_panel">
-
-    </div>
-    <div id="recommended_artists_panel">
-
+    <div id="content">
+        <div id="saved_artists_panel" class="content_element">
+            <div id="saved_artists_title">From Your Artists</div>
+            {% if saved_artists == None %}
+            <div id="saved_artists_error">
+                There was an error retrieving saved artists. Sorry for the inconvenience!
+            </div>
+            {% elif saved_artists|length == 0 %}
+            <div id="no_saved_artists">
+                You don't have any saved artists!<br />
+                Search for some artists to get started.
+            </div>
+            {% else %}
+            <div id="saved_artists">
+                <!--"https://open.spotify.com/embed/track/3ETS5vkS6FxHAvW9vyu1vb"-->
+                {% for artist in saved_artists %}
+                <div class="saved_artist">
+                    <div class="saved_artist_name">{{artist["name"]}}</div>
+                    {% for track in artist["tracks"] %}
+                    <div class="saved_artist_embed">
+                        <iframe src="{{track['url']}}" width="100%" height="80" frameborder="0" allowtransparency="true"
+                            allow="encrypted-media"></iframe>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div id="recommended_artists_panel" class="content_element">
+            <div id="recommended_artists_title">Recommended Artists</div>
+            {% if recommended_artists == None %}
+            <div id="recommended_artists_error">
+                There was an error retrieving recommended artists. Sorry for the inconvenience!
+            </div>
+            {% else %}
+            <div id="recommended_artists">
+                {% for artists in recommended_artists %}
+                <!-- recommended_artists is a list of dictionaries in which artists are grouped according to their associated saved artist -->
+                <div class="recommended_artist_section_title">
+                    Because you like {{artists["artist_name"]}}
+                </div>
+                <div class="recommended_artist_section_content">
+                    {% for artist in artists["artists"] %}
+                    <div class="recommended_artist_embed">
+                        <iframe src="{{artist['track_url']}}" width="100%" height="80" frameborder="0"
+                            allowtransparency="true" allow="encrypted-media"></iframe>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div id="artist_search">
+                TODO: Search
+            </div>
+        </div>
     </div>
 
     <script src="/static/script_dashboard.js"></script>
