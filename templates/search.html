@@ -13,8 +13,7 @@
                     <div class="recommended_artist_info">
                         <div class="recommended_artist_name">{{artist['name']}}</div>
                         <div class="recommended_artist_top_song">Top Song: <a
-                                href="/view-track?track_id={{artist['top_song_id']}}"
-                                target="_blank">{{artist['top_song_name']}}</a>
+                                href="/view-track?track_id={{artist['top_song_id']}}">{{artist['top_song_name']}}</a>
                         </div>
                     </div>
                     {% if artist['saved_by_user'] %}

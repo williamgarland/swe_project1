@@ -45,12 +45,12 @@
                 let trackName = this.getAttribute("track_name");
                 let artistName = this.getAttribute("artist_name");
                 let link = "/view-track?track_id=" + trackId + "&track_name=" + encodeURIComponent(trackName) + "&artist_name=" + encodeURIComponent(artistName);
-                window.open(link, "_blank").focus();
+                window.location.href = link;
             });
 
             $(".saved_artist_track_album_link").on("click", function () {
                 let link = "/view-album?album_id=" + this.getAttribute("album_id");
-                window.open(link, "_blank").focus();
+                window.location.href = link;
             });
         });
     </script>

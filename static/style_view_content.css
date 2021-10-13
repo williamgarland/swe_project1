@@ -32,7 +32,6 @@ html, body {
 #content_embed {
     flex: 0 0 auto;
     filter: drop-shadow(0px 10px 10px);
-    transform: translateY(30%);
 }
 
 #track_lyrics {
