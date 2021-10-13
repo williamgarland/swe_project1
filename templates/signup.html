@@ -3,16 +3,25 @@
 
 <head>
     <title>Song Oracle - Sign Up</title>
-    <!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
-    <script src="/static/jquery-3.3.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="/static/style_signup.css" rel="stylesheet" />
 </head>
 
 <body>
-    <form id="signup_form">
-        <input type="text" name="username" id="username" placeholder="Username" required autofocus />
-        <button id="signup_button" type="submit">Sign Up</button>
-    </form>
-    <div id="error_div"></div>
+    <div id="signup_div">
+        <div id="signup_title">Sign Up</div>
+        <form id="signup_form">
+            <input type="text" name="username" id="username" placeholder="Username" required autofocus
+                class="form_content" />
+            <button id="signup_button" type="submit" class="form_content">Sign Up</button>
+        </form>
+        <div id="login_link">
+            Already a member?<br />
+            <a href="/login">Log in here</a>
+        </div>
+    </div>
+
+    {% include 'toast.html' %}
 
     <script src="/static/script_signup.js"></script>
 </body>

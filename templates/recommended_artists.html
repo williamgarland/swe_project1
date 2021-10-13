@@ -8,10 +8,12 @@
 
         <div id="recommended_artists_title">Recommended Artists</div>
         <div id="artist_search">
-            <form id="search_input_form">
-                <input type="text" id="search_input" placeholder="Search for an artist..." maxlength=50 />
-                <input id="search_input_button" type="submit" value="Go" />
-            </form>
+            <div id="search_input_div">
+                <form id="search_input_form">
+                    <input type="text" id="search_input" placeholder="Search for an artist..." maxlength=50 />
+                    <input id="search_input_button" type="submit" value="Go" />
+                </form>
+            </div>
             <div id="search_results"></div>
         </div>
 
@@ -28,12 +30,13 @@
             </div>
             <div class="recommended_artist_section_content">
                 {% for artist in artists["artists"] %}
-                <div class="recommended_artist" artist_id="{{artist['artist_id']}}">
+                <div class="recommended_artist" artist_id="{{artist['artist_id']}}" artist_name="{{artist['name']}}">
                     <img src="{{artist['image_url']}}" class="recommended_artist_image" width="160" height="160" />
                     <div class="recommended_artist_info">
                         <div class="recommended_artist_name">{{artist['name']}}</div>
                         <div class="recommended_artist_top_song">Top Song: <a
-                                href="/view-track?track_id={{artist['top_song_id']}}">{{artist['top_song_name']}}</a>
+                                href="/view-track?track_id={{artist['top_song_id']}}"
+                                target="_blank">{{artist['top_song_name']}}</a>
                         </div>
                     </div>
                     {% if artist['saved_by_user'] %}
@@ -55,9 +58,10 @@
         $(".save_artist_button").on("click", function () {
             var button = $(this);
             var artistId = button.parent().attr("artist_id");
+            var name = button.parent().attr("artist_name");
             $.ajax({
                 url: '/save-artist',
-                data: { artist_id: artistId },
+                data: { artist_id: artistId, artist_name: name },
                 type: 'POST',
                 dataType: "json",
                 success: function (data) {

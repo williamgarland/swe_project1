@@ -15,11 +15,11 @@ $(function () {
                 if (data.valid) {
                     window.location.href = "/";
                 } else {
-                    showLoginError("Error logging in - Invalid credentials");
+                    showToast("Error logging in - Invalid credentials");
                 }
             },
             error: function (error) {
-                showLoginError("Error logging in - Server unavailable");
+                showToast("Error logging in - Server unavailable");
             }
         });
         return false;

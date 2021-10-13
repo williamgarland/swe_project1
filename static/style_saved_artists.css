@@ -23,8 +23,40 @@
 
 .saved_artist_track_link {
     flex: 1 1 auto;
+    font-size: 20px;
+    font-family: robotoRegular;
+    background-color: #595959;
+    border: none;
+    color: #cccccc;
+    text-align: justify;
+    padding-left: 5%;
+}
+
+.saved_artist_track_link:hover {
+    background-color: #797979;
 }
 
 .saved_artist_track_album_link {
     flex: 1 1 auto;
+    font-size: 18px;
+    font-family: robotoRegular;
+    background-color: #595959;
+    border: none;
+    color: #cccccc;
+    text-align: justify;
+    padding-left: 5%;
+}
+
+.saved_artist_track_album_link:hover {
+    background-color: #797979;
+}
+
+.section_message {
+    color: white;
+}
+
+.saved_artist_section_title {
+    color: #cccccc;
+    font-size: 20px;
+    margin-bottom: 1%;
 }

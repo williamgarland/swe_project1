@@ -6,7 +6,7 @@ USER_STATUS_ACTIVE = 1
 
 # ID username status creation_date last_login_date last_logout_date
 class DBUser(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     status = db.Column(db.Integer, nullable=False, default=USER_STATUS_ACTIVE)
     creation_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -22,6 +22,7 @@ class DBArtist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("db_user.id"))
     artist_id = db.Column(db.String(100), nullable=False)
+    artist_name = db.Column(db.String(255), nullable=True)
 
     def __repr__(self):
         return f"<Artist {self.user_id}, {self.artist_id}>"

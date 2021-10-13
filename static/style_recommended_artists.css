@@ -2,6 +2,10 @@
     margin-left: auto;
     margin-right: auto;
     width: 70%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .recommended_artist {
@@ -19,12 +23,30 @@
     flex: 1 1 auto;
     display: flex;
     flex-flow: column;
+    margin-left: 2%;
 }
 
 .recommended_artist_name {
     flex: 1 1 auto;
+    font-size: 20px;
+    font-family: robotoRegular;
+    color: #cccccc;
 }
 
 .recommended_artist_top_song {
     flex: 1 1 auto;
+    font-size: 18px;
+    font-family: robotoRegular;
+    color: #cccccc;
+}
+
+#artist_search {
+    flex: 1 1 auto;
+    margin-bottom: 3%;
+}
+
+.recommended_artist_section_title {
+    color: #cccccc;
+    font-size: 20px;
+    margin-bottom: 1%;
 }

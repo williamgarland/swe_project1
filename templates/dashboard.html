@@ -2,36 +2,14 @@
 <html>
 
 <head>
-    <title>Song Oracle - Dashboard</title>
+    <title>Song Oracle - {{content_title}}</title>
     <link href="/static/style_dashboard.css" rel="stylesheet" />
-    <script src="/static/jquery-3.3.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 
 <body>
+    {% include 'toolbar.html' %}
 
-    <div id="toolbar_panel">
-        <div id="home_button_div" class="toolbar_element">
-            <button id="home_button" onclick="gotoDashboard()">
-                Song Oracle
-            </button>
-        </div>
-
-        <div id="page_title" class="toolbar_element">
-            Dashboard
-        </div>
-
-        <div id="user_menu" class="dropdown toolbar_element">
-            <button class="dropbtn" onclick="toggleUserMenu()">
-                {{current_user.get_id()}}
-            </button>
-
-            <div id="menu_list" class="dropdown-content">
-                <!--<a href="/profile">My Profile</a>
-                <a href="/my-artists">My Artists</a>-->
-                <a href="/logout">Log Out</a>
-            </div>
-        </div>
-    </div>
     <div id="content">
         <div id="saved_artists_container" class="content_element">
             {% include 'saved_artists.html' %}

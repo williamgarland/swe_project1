@@ -15,11 +15,11 @@ $(function () {
                 if (data.valid) {
                     window.location.href = "/";
                 } else {
-                    showError("Error signing up - Username already taken");
+                    showToast("Error signing up - Username already taken");
                 }
             },
             error: function (error) {
-                showError("Error signing up - Server unavailable");
+                showToast("Error signing up - Server unavailable");
             }
         });
         return false;

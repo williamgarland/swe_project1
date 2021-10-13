@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Song Oracle - {{content_title}}</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="/static/style_view_content.css" rel="stylesheet" />
+</head>
+
+<body>
+    {% include 'toolbar.html' %}
+
+    <div id="content">
+        <iframe id="content_embed" src="{{content_url}}" width="300" height="380" frameborder="0"
+            allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+</body>
+
+</html>

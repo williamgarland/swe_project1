@@ -40,21 +40,21 @@ def validate_login():
     try:
         user = userdata.login(username)
         return jsonify({"valid": user != None})
-    except Exception as e:
-        print(str(e))
+    except Exception:
         return jsonify({"valid": False}), 500
 
 
 def create_artists_list(artists, limit=5):
     result = []
     token = spotify_calls.get_spotify_token()
-    as_list = list(artists)
     limit = min(limit, len(artists))
     for i in range(0, limit):
-        artist = as_list[i]
-        tracks = spotify_calls.get_random_artist_tracks(artist, token, limit=3)
+        artist = artists[i]
+        tracks = spotify_calls.get_random_artist_tracks(
+            artist["artist_id"], token, limit=3
+        )
         artist_map = {
-            "name": spotify_calls.get_artist_info(artist, token)["name"],
+            "name": artist["artist_name"],
             "tracks": tracks,
         }
         result.append(artist_map)
@@ -64,13 +64,13 @@ def create_artists_list(artists, limit=5):
 def create_recommended_artists_list(artists, limit=5):
     result = []
     token = spotify_calls.get_spotify_token()
-    as_list = list(artists)
     limit = min(limit, len(artists))
     for i in range(0, limit):
-        artist = as_list[i]
-        artist_info = spotify_calls.get_artist_info(artist, token)
-        recommended_artists = spotify_calls.get_related_artists(artist, token, limit=3)
-        result.append({"name": artist_info["name"], "artists": recommended_artists})
+        artist = artists[i]
+        recommended_artists = spotify_calls.get_related_artists(
+            artist["artist_id"], token, limit=3
+        )
+        result.append({"name": artist["artist_name"], "artists": recommended_artists})
     return result
 
 
@@ -80,6 +80,7 @@ def index():
     artists = None
     saved_artists = None
     recommended_artists = None
+
     try:
         artists = userdata.get_saved_artists()
     except:
@@ -99,6 +100,7 @@ def index():
         "/dashboard.html",
         saved_artists=saved_artists,
         recommended_artists=recommended_artists,
+        content_title="Dashboard",
     )
 
 
@@ -125,7 +127,7 @@ def validate_signup():
             return jsonify({"valid": True})
         else:
             return jsonify({"valid": False})
-    except:
+    except Exception:
         return jsonify({}), 500
 
 
@@ -158,10 +160,35 @@ def search():
 def save_artist():
     try:
         artist_id = flask.request.form["artist_id"]
-        userdata.add_saved_artist(artist_id)
+        artist_name = flask.request.form["artist_name"]
+        userdata.add_saved_artist(artist_id, artist_name)
         return jsonify({"success": True})
     except Exception:
         return jsonify({"success": False})
+
+
+@app.route("/view-track")
+@login_required
+def view_track():
+    track_id = flask.request.args.get("track_id")
+    track_embed_url = "https://open.spotify.com/embed/track/"
+    return flask.render_template(
+        "view_content.html",
+        content_url=track_embed_url + track_id,
+        content_title="View Track",
+    )
+
+
+@app.route("/view-album")
+@login_required
+def view_album():
+    album_id = flask.request.args.get("album_id")
+    album_embed_url = "https://open.spotify.com/embed/album/"
+    return flask.render_template(
+        "view_content.html",
+        content_url=album_embed_url + album_id,
+        content_title="View Album",
+    )
 
 
 @app.teardown_appcontext

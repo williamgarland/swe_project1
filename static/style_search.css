@@ -1,5 +1,12 @@
 #artist_search {
-    background-color: #6d6d6d6d;
+    background-color: #6d6d6d55;
+    position: relative;
     z-index: 1;
-    position: absolute;
+    width: auto;
+    max-height: fit-content;
+    overflow: auto;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
 }

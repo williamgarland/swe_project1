@@ -3,18 +3,24 @@
 
 <head>
     <title>Song Oracle - Log In</title>
-    <!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
-    <script src="/static/jquery-3.3.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="/static/style_login.css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>Please log in</h1>
-    <form id="login_form">
-        <input type="text" name="username" id="username" placeholder="Username" required autofocus />
-        <button id="login_button" type="submit">Log In</button>
-    </form>
-    <div id="error_div"></div>
-    <a href="/signup">Sign Up</a>
+    <div id="login_div">
+        <div id="login_title">Welcome to<br />Song Oracle</div>
+        <form id="login_form">
+            <input type="text" name="username" id="username" placeholder="Username" required autofocus />
+            <button id="login_button" type="submit">Log In</button>
+        </form>
+        <div id="signup_link">
+            Not a member?<br />
+            <a href="/signup">Sign up here</a>
+        </div>
+    </div>
+
+    {% include 'toast.html' %}
 
     <script src="/static/script_login.js"></script>
 </body>

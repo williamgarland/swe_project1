@@ -1,0 +1,26 @@
+<div id="toolbar_panel">
+    <div id="home_button_div" class="toolbar_element">
+        <button id="home_button" onclick="gotoDashboard()">
+            Song Oracle
+        </button>
+    </div>
+
+    <div id="page_title" class="toolbar_element">
+        {{content_title}}
+    </div>
+
+    <div id="user_menu" class="dropdown toolbar_element">
+        <button class="dropbtn" onclick="toggleUserMenu()">
+            {{current_user.get_id()}}
+        </button>
+
+        <div id="menu_list" class="dropdown-content">
+            <!--<a href="/profile">My Profile</a>
+            <a href="/my-artists">My Artists</a>-->
+            <a href="/logout">Log Out</a>
+        </div>
+    </div>
+</div>
+
+<link href="/static/style_toolbar.css" rel="stylesheet" />
+<script src="/static/script_toolbar.js"></script>

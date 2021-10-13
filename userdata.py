@@ -73,7 +73,8 @@ class User(flask_login.UserMixin):
 
         session = int__Session()
         try:
-            session.add(DBUser(username=uid))
+            id = session.query(DBUser).count()
+            session.add(DBUser(id=id, username=uid))
             session.commit()
         except:
             session.rollback()
@@ -81,8 +82,6 @@ class User(flask_login.UserMixin):
         finally:
             session.close()
 
-        # int__db.session.add(DBUser(username=uid))
-        # int__db.session.commit()
         return result
 
 
@@ -174,7 +173,7 @@ def remove_saved_artist(artist_id: str):
     # int__db.session.commit()
 
 
-def add_saved_artist(artist_id: str):
+def add_saved_artist(artist_id: str, artist_name: str):
     """
     Adds the artist with the specified ID to the current user's list of saved artists.
 
@@ -187,7 +186,9 @@ def add_saved_artist(artist_id: str):
 
     session = int__Session()
     try:
-        session.add(DBArtist(user_id=user.id, artist_id=artist_id))
+        session.add(
+            DBArtist(user_id=user.id, artist_id=artist_id, artist_name=artist_name)
+        )
         session.commit()
     except:
         session.rollback()
@@ -199,18 +200,18 @@ def add_saved_artist(artist_id: str):
     # int__db.session.commit()
 
 
-def get_saved_artists() -> set[str]:
+def get_saved_artists() -> list[dict[str, str]]:
     """
-    Returns a set of artist IDs associated with the current user.
+    Returns a list of artist database objects associated with the current user.
 
-    If the current user has no saved artists, this will return an empty set.
+    If the current user has no saved artists, this will return an empty list.
     If no user is currently logged in or the user is not in the "artists" database, this function will throw an exception.
     """
     user = get_current_user()
     if user == None:
         raise Exception("No user is currently logged in")
 
-    artist_ids = set()
+    artist_db = list()
 
     from models import DBArtist
 
@@ -226,8 +227,10 @@ def get_saved_artists() -> set[str]:
         session.close()
 
     for artist in artists:
-        artist_ids.add(artist.artist_id)
-    return artist_ids
+        artist_db.append(
+            {"artist_id": artist.artist_id, "artist_name": artist.artist_name}
+        )
+    return artist_db
 
 
 def has_saved_artist(artist_id: str) -> bool:
