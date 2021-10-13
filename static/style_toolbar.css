@@ -20,8 +20,9 @@
     font-size: larger;
     width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    transform: translateX(-2%);
 }
 
 .toolbar_element {
@@ -31,6 +32,7 @@
 #home_button_div {
     float: left;
     z-index: 1;
+    border-radius: solid #595959;
 }
 
 #home_button {
@@ -40,7 +42,7 @@
     cursor: pointer;
     padding-left: 10px;
     padding-right: 10px;
-    background-color: #595959;
+    background-color: #696969;
     font-family: robotoRegular;
 }
 
@@ -56,7 +58,7 @@
 /* Dropdown Button */
 
 .dropbtn {
-    background-color: #595959;
+    background-color: #696969;
     color: white;
     font-size: 16px;
     padding-left: 10px;

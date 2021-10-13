@@ -14,7 +14,7 @@
                         <div class="recommended_artist_name">{{artist['name']}}</div>
                         <div class="recommended_artist_top_song">Top Song: <a class="recommended_artist_top_song_link"
                                 track_id="{{artist['top_song_id']}}" track_name="{{artist['top_song_name']}}"
-                                artist_name="{{artist['name']}}">{{artist['top_song_name']}}</a>
+                                artist_name="{{artist['name']}}" href="#">{{artist['top_song_name']}}</a>
                         </div>
                     </div>
                     {% if artist['saved_by_user'] %}
@@ -31,13 +31,12 @@
 </div>
 
 <script>
-    $(".recommended_artist_top_song_link").on("click", function () {
+    $(".recommended_artist_top_song_link").attr("href", function () {
         let trackId = this.getAttribute("track_id");
         let trackName = this.getAttribute("track_name");
         let artistName = this.getAttribute("artist_name");
         let link = "/view-track?track_id=" + trackId + "&track_name=" + encodeURIComponent(trackName) + "&artist_name=" + encodeURIComponent(artistName);
-        window.location.href = link;
-        return false;
+        return link;
     });
 
     function mouse_leave_row(data) {
@@ -66,6 +65,7 @@
                     // { success: true|false }
                     if (data.success) {
                         button.prop("disabled", true);
+                        showToast("Artist added! Refresh to see changes.");
                     } else {
                         showToast("Error saving artist");
                     }

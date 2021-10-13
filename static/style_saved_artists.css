@@ -25,7 +25,7 @@
     flex: 1 1 auto;
     font-size: 20px;
     font-family: robotoRegular;
-    background-color: #595959;
+    background-color: #696969;
     border: none;
     color: #cccccc;
     text-align: justify;
@@ -33,7 +33,7 @@
 }
 
 .saved_artist_track_link:hover {
-    background-color: #797979;
+    background-color: #898989;
 }
 
 .saved_artist_track_album_link {
@@ -48,7 +48,7 @@
 }
 
 .saved_artist_track_album_link:hover {
-    background-color: #797979;
+    background-color: #898989;
 }
 
 .section_message {

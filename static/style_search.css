@@ -10,3 +10,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.recommended_artist_top_song_link {
+    color: white;
+}
