@@ -133,9 +133,6 @@ def validate_signup():
         else:
             return jsonify({"valid": False})
     except Exception:
-        import traceback
-
-        print("ERROR: " + traceback.format_exc())
         return jsonify({}), 500
 
 

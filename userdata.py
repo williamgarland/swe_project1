@@ -73,8 +73,8 @@ class User(flask_login.UserMixin):
 
         session = int__Session()
         try:
-            id = session.query(DBUser).count()
-            session.add(DBUser(id=id, username=uid))
+            # id = session.query(DBUser).count()
+            session.add(DBUser(username=uid))
             session.commit()
         except:
             session.rollback()
