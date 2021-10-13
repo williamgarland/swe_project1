@@ -6,6 +6,7 @@ from flask_login.utils import login_required
 from flask_sqlalchemy import SQLAlchemy
 import userdata
 import spotify_calls
+import genius_calls
 
 root_endpoint = "https://api.spotify.com/v1/"
 
@@ -46,6 +47,8 @@ def validate_login():
 
 def create_artists_list(artists, limit=5):
     result = []
+    if len(artists) == 0:
+        return result  # No need to do any api calls if there are no artists
     token = spotify_calls.get_spotify_token()
     limit = min(limit, len(artists))
     for i in range(0, limit):
@@ -63,6 +66,8 @@ def create_artists_list(artists, limit=5):
 
 def create_recommended_artists_list(artists, limit=5):
     result = []
+    if len(artists) == 0:
+        return result  # No need to do any api calls if there are no artists
     token = spotify_calls.get_spotify_token()
     limit = min(limit, len(artists))
     for i in range(0, limit):
@@ -172,10 +177,15 @@ def save_artist():
 def view_track():
     track_id = flask.request.args.get("track_id")
     track_embed_url = "https://open.spotify.com/embed/track/"
+    lyrics_url = genius_calls.get_genius_lyrics_url(
+        flask.request.args.get("track_name"), flask.request.args.get("artist_name")
+    )
     return flask.render_template(
         "view_content.html",
         content_url=track_embed_url + track_id,
         content_title="View Track",
+        lyrics_url=lyrics_url,
+        has_lyrics=True,
     )
 
 
@@ -188,6 +198,7 @@ def view_album():
         "view_content.html",
         content_url=album_embed_url + album_id,
         content_title="View Album",
+        has_lyrics=False,
     )
 
 

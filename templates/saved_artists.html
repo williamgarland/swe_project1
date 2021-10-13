@@ -25,8 +25,8 @@
                 <div class="saved_artist_track">
                     <img src="{{track['image_url']}}" class="saved_artist_track_image" width="160" height="160" />
                     <div class="saved_artist_track_info">
-                        <button class="saved_artist_track_link"
-                            track_id="{{track['track_id']}}">{{track["name"]}}</button>
+                        <button class="saved_artist_track_link" track_id="{{track['track_id']}}"
+                            track_name="{{track['name']}}" artist_name="{{artist['name']}}">{{track["name"]}}</button>
                         <button class="saved_artist_track_album_link"
                             album_id="{{track['album_id']}}">{{track["album_name"]}}</button>
                     </div>
@@ -41,12 +41,15 @@
     <script>
         $(function () {
             $(".saved_artist_track_link").on("click", function () {
-                var link = "/view-track?track_id=" + this.getAttribute("track_id");
+                let trackId = this.getAttribute("track_id");
+                let trackName = this.getAttribute("track_name");
+                let artistName = this.getAttribute("artist_name");
+                let link = "/view-track?track_id=" + trackId + "&track_name=" + encodeURIComponent(trackName) + "&artist_name=" + encodeURIComponent(artistName);
                 window.open(link, "_blank").focus();
             });
 
             $(".saved_artist_track_album_link").on("click", function () {
-                var link = "/view-album?album_id=" + this.getAttribute("album_id");
+                let link = "/view-album?album_id=" + this.getAttribute("album_id");
                 window.open(link, "_blank").focus();
             });
         });

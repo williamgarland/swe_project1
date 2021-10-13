@@ -9,7 +9,6 @@ html, body {
     display: flex;
     flex-flow: column;
     flex: 1 1 auto;
-    /*background-color: #9b9b9b;*/
     background: rgb(0, 0, 0);
     background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(74, 74, 74, 1) 100%);
     background-repeat: no-repeat;
@@ -18,14 +17,33 @@ html, body {
     justify-content: center;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 #content {
     flex: 1 1 auto;
-    transform: translateY(15%);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
 }
 
 #content_embed {
-    /*box-shadow: 0 4px 8px 0 rgba(0.2, 0.2, 0.2, 0.2), 0 6px 20px 0 rgba(0.2, 0.2, 0.2, 0.19);*/
+    flex: 0 0 auto;
     filter: drop-shadow(0px 10px 10px);
+    transform: translateY(30%);
+}
+
+#track_lyrics {
+    flex: 1 1 auto;
+    transform: translateY(45%);
+    color: white;
+}
+
+#track_lyrics_link_icon {
+    vertical-align: text-bottom;
+    width: 20px;
+    height: 20px;
+    filter: invert() sepia(100%) saturate(300%) hue-rotate(100deg) contrast(50%);
 }
