@@ -15,12 +15,12 @@ app = flask.Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 # Point SQLAlchemy to your Heroku database
-"""
+
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     "postgresql" + os.getenv("DATABASE_URL")[8:]
 )  # replace the initial 'postgres' with 'postgresql' because heroku is stupid and doesn't let you modify the config var
-"""
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("LOCAL_DATABASE_URL")
+
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("LOCAL_DATABASE_URL")
 # Gets rid of a warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -197,5 +197,5 @@ def shutdown_session(exception=None):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # app.run(host=os.getenv("IP", "0.0.0.0"), port=os.getenv("PORT", 8080))
+    # app.run(debug=True)
+    app.run(host=os.getenv("IP", "0.0.0.0"), port=os.getenv("PORT", 8080))
