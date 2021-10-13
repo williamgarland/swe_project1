@@ -68,15 +68,20 @@ def get_json(endpoint, token=None, params={}) -> object:
     return result.json()
 
 
-def get_artist_top_tracks(artist_id, token=None) -> list[dict[str, object]]:
+def get_artist_top_tracks(artist_id, token=None, limit=10) -> list[dict[str, object]]:
     """
     Returns the list of the top tracks of the artist with the specified artist ID.
+    By default this function will return up to 10 tracks.
 
     This function will throw an exception if the tracks could not be retrieved.
     """
 
+    limit = max(1, min(limit, 10))  # The limit must be between 1 and 10
+
     data = get_json(
-        "artists/" + artist_id + "/top-tracks", token, params={"market": "US"}
+        "artists/" + artist_id + "/top-tracks",
+        token,
+        params={"market": "US", "limit": limit},
     )
 
     tracks = []
@@ -111,7 +116,15 @@ def get_random_artist_tracks(artist_id, token=None, limit=5) -> list[dict[str, s
         if index == -1:
             continue
         chosen_indices.append(index)
-        result.append({"url": __spotify_track_embed_url + tracks[index]["id"]})
+        result.append(
+            {
+                "name": tracks[index]["name"],
+                "track_id": tracks[index]["id"],
+                "album_id": tracks[index]["album"]["id"],
+                "album_name": tracks[index]["album"]["name"],
+                "image_url": tracks[index]["album"]["images"][0]["url"],
+            }
+        )
 
         if len(result) == limit:
             break
@@ -143,11 +156,11 @@ def get_related_artists(artist_id, token=None, limit=5) -> list[dict[str, str]]:
 
     result = []
     chosen_indices = []
-    for i in len(related):
-        index = randrange(len(related))
+    for i in range(0, len(related["artists"])):
+        index = randrange(len(related["artists"]))
         tries = 0
         while index in chosen_indices:
-            index = randrange(len(related))
+            index = randrange(len(related["artists"]))
             tries += 1
             if tries > 10:
                 # If we've already tried 10 times to get a random index and it still doesn't work, just skip this one
@@ -156,16 +169,52 @@ def get_related_artists(artist_id, token=None, limit=5) -> list[dict[str, str]]:
         if index == -1:
             continue
         chosen_indices.append(index)
-        current_artist_id = related[index]["id"]
-        top_tracks = related(current_artist_id, token)
-        track_id = top_tracks(randrange(len(top_tracks)))
+        current_artist_id = related["artists"][index]["id"]
+        top_tracks = get_artist_top_tracks(current_artist_id, token, limit=1)
         result.append(
             {
+                "name": related["artists"][index]["name"],
                 "artist_id": current_artist_id,
-                "track_url": __spotify_track_embed_url + track_id,
+                "top_song_id": top_tracks[0]["id"],
+                "top_song_name": top_tracks[0]["name"],
+                "image_url": top_tracks[0]["album"]["images"][0]["url"],
             }
         )
 
         if len(result) == limit:
             break
+    return result
+
+
+def search_for_artist(search_term: str, token=None, limit=10) -> list[object]:
+    """
+    Returns a list of possible matching artists and their associated top track.
+    By default this function will return up to 10 artists.
+
+    This function will throw an exception if the artists could not be retrieved.
+    """
+
+    limit = max(1, min(limit, 50))  # The limit must be between 1 and 50
+
+    result = []
+
+    response = get_json(
+        "search", token, params={"q": search_term, "type": "artist", "limit": limit}
+    )
+
+    for artist in response["artists"]["items"]:
+        artist_id = artist["id"]
+        top_tracks = get_artist_top_tracks(artist_id, token, 1)
+        if len(top_tracks) < 1:
+            continue
+        result.append(
+            {
+                "name": artist["name"],
+                "artist_id": artist_id,
+                "top_song_name": top_tracks[0]["name"],
+                "top_song_id": top_tracks[0]["id"],
+                "image_url": top_tracks[0]["album"]["images"][0]["url"]
+            }
+        )
+
     return result

@@ -3,7 +3,7 @@ function showError(errorStr) {
 }
 
 $(function () {
-    $("#signup_button").click(function () {
+    $("#signup_form").on("submit", function () {
         $.ajax({
             url: '/validate_signup',
             data: $('#signup_form').serialize(),
@@ -22,5 +22,6 @@ $(function () {
                 showError("Error signing up - Server unavailable");
             }
         });
+        return false;
     });
 });

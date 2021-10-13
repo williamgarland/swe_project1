@@ -1,0 +1,39 @@
+<link href="/static/style_saved_artists.css" rel="stylesheet" />
+
+{% if saved_artists == None %}
+<div id="saved_artists_panel" class="content_error">
+    {% else %}
+    <div id="saved_artists_panel">
+        {% endif %}
+
+        <div id="saved_artists_title">From Your Artists</div>
+        {% if saved_artists == None %}
+        <div id="saved_artists_error" class="section_message">
+            Error retrieving saved artists
+        </div>
+        {% elif saved_artists|length == 0 %}
+        <div id="no_saved_artists" class="section_message">
+            You don't have any saved artists!<br />
+            Search for some artists to get started.
+        </div>
+        {% else %}
+        <div id="saved_artists" class="scrollbox">
+            {% for artist in saved_artists %}
+            <div class="saved_artist">
+                <div class="saved_artist_section_title">From {{artist["name"]}}</div>
+                {% for track in artist["tracks"] %}
+                <div class="saved_artist_track">
+                    <img src="{{track['image_url']}}" class="saved_artist_track_image" width="160" height="160" />
+                    <div class="saved_artist_track_info">
+                        <a class="saved_artist_track_link"
+                            href="/view-track?track_id={{track['track_id']}}">{{track["name"]}}</a>
+                        <a class="saved_artist_track_album_link"
+                            href="/view-album?album_id={{track['album_id']}}">{{track["album_name"]}}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>

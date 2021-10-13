@@ -1,0 +1,78 @@
+<link href="/static/style_recommended_artists.css" rel="stylesheet" />
+
+{% if recommended_artists == None %}
+<div id="recommended_artists_panel" class="content_error">
+    {% else %}
+    <div id="recommended_artists_panel">
+        {% endif %}
+
+        <div id="recommended_artists_title">Recommended Artists</div>
+        <div id="artist_search">
+            <form id="search_input_form">
+                <input type="text" id="search_input" placeholder="Search for an artist..." maxlength=50 />
+                <input id="search_input_button" type="submit" value="Go" />
+            </form>
+            <div id="search_results"></div>
+        </div>
+
+        {% if recommended_artists == None %}
+        <div id="recommended_artists_error" class="section_message">
+            Error retrieving recommended artists
+        </div>
+        {% else %}
+        <div id="recommended_artists" class="scrollbox">
+            {% for artists in recommended_artists %}
+            <!-- recommended_artists is a list of dictionaries in which artists are grouped according to their associated saved artist -->
+            <div class="recommended_artist_section_title">
+                Because you like {{artists["name"]}}
+            </div>
+            <div class="recommended_artist_section_content">
+                {% for artist in artists["artists"] %}
+                <div class="recommended_artist" artist_id="{{artist['artist_id']}}">
+                    <img src="{{artist['image_url']}}" class="recommended_artist_image" width="160" height="160" />
+                    <div class="recommended_artist_info">
+                        <div class="recommended_artist_name">{{artist['name']}}</div>
+                        <div class="recommended_artist_top_song">Top Song: <a
+                                href="/view-track?track_id={{artist['top_song_id']}}">{{artist['top_song_name']}}</a>
+                        </div>
+                    </div>
+                    {% if artist['saved_by_user'] %}
+                    <button class="save_artist_button" disabled>+</button>
+                    {% else %}
+                    <button class="save_artist_button">+</button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $(".save_artist_button").on("click", function () {
+            var button = $(this);
+            var artistId = button.parent().attr("artist_id");
+            $.ajax({
+                url: '/save-artist',
+                data: { artist_id: artistId },
+                type: 'POST',
+                dataType: "json",
+                success: function (data) {
+                    // The data returned will be a JSON object consisting of:
+                    // { success: true|false }
+                    if (data.success) {
+                        button.prop("disabled", true);
+                    } else {
+                        showToast("Error saving artist");
+                    }
+                },
+                error: function (error) {
+                    showToast("Error saving artist");
+                }
+            });
+        });
+    });
+</script>

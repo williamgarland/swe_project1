@@ -1,0 +1,30 @@
+#recommended_artists_panel {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.recommended_artist {
+    display: flex;
+    flex-flow: row;
+    background-color: #595959;
+    margin-bottom: 5%;
+}
+
+.recommended_artist_image {
+    flex: 0 0 auto;
+}
+
+.recommended_artist_info {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column;
+}
+
+.recommended_artist_name {
+    flex: 1 1 auto;
+}
+
+.recommended_artist_top_song {
+    flex: 1 1 auto;
+}

@@ -1,0 +1,71 @@
+<div id="search_table_container">
+    {% if artists == None %}
+    <div id="search_error">
+        Could not retrieve artist info
+    </div>
+    {% else %}
+    <table id="search_table">
+        {% for artist in artists %}
+        <tr class="search_row">
+            <td class="search_result" onmouseover="mouse_over_search_row(this);" onmouseleave="mouse_leave_row(this);">
+                <div class="recommended_artist" artist_id="{{artist['artist_id']}}">
+                    <img src="{{artist['image_url']}}" class="recommended_artist_image" width="80" height="80" />
+                    <div class="recommended_artist_info">
+                        <div class="recommended_artist_name">{{artist['name']}}</div>
+                        <div class="recommended_artist_top_song">Top Song: <a
+                                href="/view-track?track_id={{artist['top_song_id']}}">{{artist['top_song_name']}}</a>
+                        </div>
+                    </div>
+                    {% if artist['saved_by_user'] %}
+                    <button class="search_result_button" disabled>+</button>
+                    {% else %}
+                    <button class="search_result_button">+</button>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+
+<script>
+    function mouse_leave_row(data) {
+        var row = $(data).parent("tr");
+        row.parent().children().removeClass("selected_search_row");
+    }
+
+    function mouse_over_search_row(data) {
+        var row = $(data).parent("tr");
+        row.parent().children().removeClass("selected_search_row");
+        row.addClass("selected_search_row");
+    }
+
+    $(function () {
+        $(".search_result_button").on("click", function () {
+            var button = $(this);
+            var artistId = button.parent().attr("artist_id");
+            $.ajax({
+                url: '/save-artist',
+                data: { artist_id: artistId },
+                type: 'POST',
+                dataType: "json",
+                success: function (data) {
+                    // The data returned will be a JSON object consisting of:
+                    // { success: true|false }
+                    if (data.success) {
+                        button.prop("disabled", true);
+                    } else {
+                        showToast("Error saving artist");
+                    }
+                },
+                error: function (error) {
+                    showToast("Error saving artist");
+                }
+            });
+            //return false;
+        });
+    });
+</script>
+
+<link href="/static/style_search.css" rel="stylesheet" />

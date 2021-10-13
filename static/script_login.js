@@ -3,7 +3,7 @@ function showLoginError(errorStr) {
 }
 
 $(function () {
-    $("#log_in_button").click(function () {
+    $("#login_form").on("submit", function () {
         $.ajax({
             url: '/validate_login',
             data: $('#login_form').serialize(),
@@ -22,5 +22,6 @@ $(function () {
                 showLoginError("Error logging in - Server unavailable");
             }
         });
+        return false;
     });
 });

@@ -1,57 +1,66 @@
 html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    height: 100%;
     display: flex;
     flex-flow: column;
     flex: 1 1 auto;
-}
-
-.toolbar_element {
-    display: inline-block;
+    background-color: #9b9b9b;
 }
 
 #toolbar_panel {
     flex: 0 1 auto;
     width: 100%;
-    border-bottom: #555555 solid;
+    background-color: #595959;
     display: flex;
     flex-flow: row;
 }
 
 #page_title {
-    flex: 1 1 0%;
+    color: white;
     text-align: center;
     font-size: larger;
-    transform: translateY(25%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toolbar_element {
+    flex: 1 1 auto;
 }
 
 #home_button_div {
-    flex: 0 1 0%;
+    float: left;
+    z-index: 1;
 }
 
 #home_button {
+    color: white;
     border: none;
     font-size: 16px;
     cursor: pointer;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #595959;
 }
 
 #home_button:hover {
-    background-color: #DDDDDD;
+    background-color: #868686;
 }
 
 #user_menu {
-    flex: 0 1 0%;
+    float: right;
+    z-index: 1;
 }
 
 /* Dropdown Button */
 
 .dropbtn {
-    background-color: #f1f1f1;
-    color: black;
+    background-color: #595959;
+    color: white;
     font-size: 16px;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     border: none;
     cursor: pointer;
     height: 100%;
@@ -60,7 +69,7 @@ html, body {
 /* Dropdown button on hover & focus */
 
 .dropbtn:hover, .dropbtn:focus {
-    background-color: #DDDDDD;
+    background-color: #868686;
 }
 
 /* The container <div> - needed to position the dropdown content */
@@ -75,7 +84,7 @@ html, body {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f1f1f1;
+    background-color: #868686;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -94,7 +103,7 @@ html, body {
 /* Change color of dropdown links on hover */
 
 .dropdown-content a:hover {
-    background-color: #ddd
+    background-color: #cccccc
 }
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
@@ -107,17 +116,18 @@ html, body {
     flex: 1 1 auto;
     display: flex;
     flex-flow: row;
+    border: solid green;
+    width: 100%;
 }
 
 .content_element {
     flex: 1 1 auto;
-    /*width: 100%;
-    height: 100%;*/
     width: 100%;
 }
 
-#saved_artists_panel {
-    border-right: solid gray;
+#saved_artists_container {
+    border-right: solid #595959;
+    background-color: #9b9b9b;
 }
 
 #saved_artists_title {
@@ -125,11 +135,29 @@ html, body {
     text-align: center;
 }
 
-#recommended_artists_panel {
-    border-left: solid gray;
+#recommended_artists_container {
+    border-left: solid #595959;
+    background-color: #9b9b9b;
 }
 
 #recommended_artists_title {
     font-size: 24px;
     text-align: center;
+}
+
+.content_error {
+    background-color: #cccccc;
+}
+
+.section_message {
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    margin-top: 30%;
+    height: 100%;
+}
+
+.scrollbox {
+    overflow: auto;
+    max-height: fit-content;
 }

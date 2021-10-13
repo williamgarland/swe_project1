@@ -1,0 +1,30 @@
+#saved_artists_panel {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.saved_artist_track {
+    display: flex;
+    flex-flow: row;
+    background-color: #595959;
+    margin-bottom: 5%;
+}
+
+.saved_artist_track_image {
+    flex: 0 0 auto;
+}
+
+.saved_artist_track_info {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column;
+}
+
+.saved_artist_track_link {
+    flex: 1 1 auto;
+}
+
+.saved_artist_track_album_link {
+    flex: 1 1 auto;
+}

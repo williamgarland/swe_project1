@@ -4,6 +4,10 @@ function toggleUserMenu() {
     document.getElementById("menu_list").classList.toggle("show");
 }
 
+function gotoDashboard() {
+    window.location.href = "/";
+}
+
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function (event) {
     if (!event.target.matches('.dropbtn')) {
@@ -17,3 +21,19 @@ window.onclick = function (event) {
         }
     }
 }
+
+$(function () {
+    $("#search_input_form").on("submit", function () {
+        var text = $("#search_input").val();
+        $.ajax({
+            url: "/search",
+            type: "get",
+            data: { search_input: text },
+            success: function (response) {
+                $("#search_results").html(response);
+            },
+            error: function (xhr) { }
+        });
+        return false;
+    });
+});

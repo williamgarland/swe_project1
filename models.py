@@ -21,7 +21,7 @@ class DBUser(db.Model):
 class DBArtist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("db_user.id"))
-    artist_id = db.Column(db.String(120), nullable=False)
+    artist_id = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         return f"<Artist {self.user_id}, {self.artist_id}>"
