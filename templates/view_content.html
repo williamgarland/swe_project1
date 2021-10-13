@@ -14,8 +14,14 @@
         <iframe id="content_embed" src="{{content_url}}" width="300" height="380" frameborder="0"
             allowtransparency="true" allow="encrypted-media"></iframe>
         {% if has_lyrics %}
+        {% if lyrics_url == None %}
+        <div id="track_lyrics">
+            Error Retrieving Track Lyrics
+        </div>
+        {% else %}
         <a id="track_lyrics" href="{{lyrics_url}}" target="_blank">
             View Lyrics <img src="/static/external_link.png" id="track_lyrics_link_icon" /></a>
+        {% endif %}
         {% endif %}
     </div>
 </body>

@@ -177,9 +177,13 @@ def save_artist():
 def view_track():
     track_id = flask.request.args.get("track_id")
     track_embed_url = "https://open.spotify.com/embed/track/"
-    lyrics_url = genius_calls.get_genius_lyrics_url(
-        flask.request.args.get("track_name"), flask.request.args.get("artist_name")
-    )
+    lyrics_url = None
+    try:
+        lyrics_url = genius_calls.get_genius_lyrics_url(
+            flask.request.args.get("track_name"), flask.request.args.get("artist_name")
+        )
+    except Exception:
+        pass
     return flask.render_template(
         "view_content.html",
         content_url=track_embed_url + track_id,
